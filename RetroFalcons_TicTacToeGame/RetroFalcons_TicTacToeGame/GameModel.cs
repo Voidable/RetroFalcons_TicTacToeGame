@@ -81,13 +81,14 @@ namespace RetroFalcons_TicTacToeGame
         public void InputMove(int x, int y)
         {
             //  Validate the inputs
-            if (EvaluateValidMove(x,y)) //  Valid move
+            if (EvaluateValidMove(x, y)) //  Valid move
             {
                 //  Set the current piece in the field
                 _field[x, y] = GetCurrentGamePiece();
 
-                //  Switch players
-                SwitchCurrentPlayer();
+                //  Re-Evaluate game state
+                EvaluateGameState();
+
             }
             else   //   Invalid move
             {
@@ -95,6 +96,39 @@ namespace RetroFalcons_TicTacToeGame
             }
         }
 
+        /// <summary>
+        /// Evaluates the Game's state, checking for win, cat, then current player.
+        /// </summary>
+        public void EvaluateGameState()
+        {
+            //  Check for win
+            CheckForWinCondition();
+
+            //  Check for Cat
+            CheckForCatCondition();
+
+            //  Switch Player
+            SwitchCurrentPlayer();
+        }
+
+        public bool CheckForWinCondition()
+        {
+            bool winCondition = false;
+
+            return winCondition;
+        }
+
+        public bool CheckForCatCondition()
+        {
+            bool catCondition = true;
+
+            return catCondition;
+        }
+
+        /// <summary>
+        /// Returns the current game piece based on which player's turn it is.
+        /// </summary>
+        /// <returns></returns>
         public GamePiece GetCurrentGamePiece()
         {
             //  Get the correct piece
@@ -117,6 +151,9 @@ namespace RetroFalcons_TicTacToeGame
             return piece;
         }
 
+        /// <summary>
+        /// Switches player's turn
+        /// </summary>
         public void SwitchCurrentPlayer()
         {
             //  Change Players
