@@ -168,6 +168,21 @@ namespace RetroFalcons_TicTacToeGame
 
         #region [ CONSTRUCTORS ]
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public GameModel()
+        {
+            //  Iterate through each cell in the grid and ensure its set to NO_VALUE
+            for (int y = 0; y < 3; y++)
+            {
+                for (int x = 0; x < 3; x++)
+                {
+                    _field[x, y] = GamePiece.NO_VALUE;
+                }
+            }
+        }
+
         #endregion
     }
 }

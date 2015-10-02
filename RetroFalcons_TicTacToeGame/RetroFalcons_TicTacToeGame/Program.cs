@@ -10,6 +10,11 @@ namespace RetroFalcons_TicTacToeGame
     {
         static void Main(string[] args)
         {
+            //  Create game controller object
+            GameController controller = new GameController();
+
+            //  Instruct controller to run the game
+            controller.RunGameLogic();
         }
     }
 }
