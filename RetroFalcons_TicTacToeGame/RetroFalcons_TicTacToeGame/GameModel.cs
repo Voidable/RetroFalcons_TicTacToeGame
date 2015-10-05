@@ -99,26 +99,26 @@ namespace RetroFalcons_TicTacToeGame
         /// <summary>
         /// Evaluates the Game's state, checking for win, cat, then current player.
         /// </summary>
-        public void EvaluateGameState()
+        public void EvaluateGameState(GamePiece[,] field)
         {
             //  Check for win
-            CheckForWinCondition();
+            CheckForWinCondition(field);
 
             //  Check for Cat
-            CheckForCatCondition();
+            CheckForCatCondition(field);
 
             //  Switch Player
             SwitchCurrentPlayer();
         }
 
-        public bool CheckForWinCondition()
+        public bool CheckForWinCondition(GamePiece[,] field)
         {
             bool winCondition = false;
 
             return winCondition;
         }
 
-        public bool CheckForCatCondition()
+        public bool CheckForCatCondition(GamePiece[,] field)
         {
             bool catCondition = true;
 
