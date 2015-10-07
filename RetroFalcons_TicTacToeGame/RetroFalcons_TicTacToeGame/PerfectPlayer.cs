@@ -57,6 +57,8 @@ namespace RetroFalcons_TicTacToeGame
             {
                 return ScoreGame(field);
             }
+
+            return 0;
         }
 
         /// <summary>

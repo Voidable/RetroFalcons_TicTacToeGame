@@ -87,7 +87,7 @@ namespace RetroFalcons_TicTacToeGame
                 _field[x, y] = GetCurrentGamePiece();
 
                 //  Re-Evaluate game state
-                EvaluateGameState();
+                EvaluateGameState(_field);
 
             }
             else   //   Invalid move
@@ -111,17 +111,27 @@ namespace RetroFalcons_TicTacToeGame
             SwitchCurrentPlayer();
         }
 
+        /// <summary>
+        /// Checks for a 3 in a row
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
         public bool CheckForWinCondition(GamePiece[,] field)
         {
             bool winCondition = false;
-
+            //TODO: Implement Win check
             return winCondition;
         }
 
+        /// <summary>
+        /// Checks for a cat game
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
         public bool CheckForCatCondition(GamePiece[,] field)
         {
             bool catCondition = true;
-
+            //TODO: Implement Cat check
             return catCondition;
         }
 
@@ -152,7 +162,7 @@ namespace RetroFalcons_TicTacToeGame
         }
 
         /// <summary>
-        /// Switches player's turn
+        /// Switches player's turn, if the game is over it doesn't change players
         /// </summary>
         public void SwitchCurrentPlayer()
         {

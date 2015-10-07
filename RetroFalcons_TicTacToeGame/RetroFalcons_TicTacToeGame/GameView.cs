@@ -9,6 +9,10 @@ namespace RetroFalcons_TicTacToeGame
     class GameView
     {
         #region [ FIELDS ]
+        private const int CONSOLE_WIDTH = 31;
+        private const int CONSOLE_HEIGHT = 35;
+
+        private const int MESSAGE_BOX_WIDTH = 17;
 
         private GameModel _model;
 
@@ -72,7 +76,7 @@ namespace RetroFalcons_TicTacToeGame
         public void DrawMessageBox(string inputMessage)
         {
             //  Create the buffer to center the Message Box
-            int bufferValue = ((Console.WindowWidth / 2) - (17 / 2));//16 is the width of the message box
+            int bufferValue = ((CONSOLE_WIDTH / 2) - (MESSAGE_BOX_WIDTH / 2));//17 is the width of the message box
             string buffer = new string(' ', bufferValue);
 
             //  Top of message box
@@ -80,8 +84,8 @@ namespace RetroFalcons_TicTacToeGame
             Console.WriteLine("{0}#               #", buffer);
 
             //  Generate the middle of the message box
-            //  Text gets divided into 13 character segments, then gets '# ' and ' #'
-            int lineLength = 13;
+            //  Text gets divided into character segments, with a length of 4 less than box, width then gets '# ' and ' #'
+            int lineLength = MESSAGE_BOX_WIDTH - 4;
 
             #region Credit for this code block goes to http://stackoverflow.com/users/306651/hans-olsson
             List<string> chunks = new List<string>();
@@ -97,7 +101,7 @@ namespace RetroFalcons_TicTacToeGame
             //  Write each line
             foreach (string chunk in chunks)
             {
-                string endPadding = new string(' ', (13 - chunk.Length));
+                string endPadding = new string(' ', ((MESSAGE_BOX_WIDTH - 4) - chunk.Length));
                 string line = buffer + "# " + chunk + endPadding + " #";
                 Console.WriteLine(line);
             }
@@ -123,8 +127,8 @@ namespace RetroFalcons_TicTacToeGame
             _model = modelObject;
 
             //  Adjust the console window
-            Console.WindowWidth = 31;
-            Console.WindowHeight = 35;
+            Console.WindowWidth = CONSOLE_WIDTH;
+            Console.WindowHeight = CONSOLE_HEIGHT;
         }
 
         #endregion
