@@ -9,25 +9,30 @@ namespace RetroFalcons_TicTacToeGame
     class GameView
     {
         #region [ FIELDS ]
-        private const int CONSOLE_WIDTH = 31;
+        //  Dimensions of the Console
+        private const int CONSOLE_WIDTH = 41;
         private const int CONSOLE_HEIGHT = 35;
 
-        private const int MESSAGE_BOX_WIDTH = 17;
+        //  Width of the message box
+        private const int MESSAGE_BOX_WIDTH = 27;
 
+        //  Refrence to the model
         private GameModel _model;
-
-        #endregion
-
-
-        #region [ PROPERTIES ]
 
         #endregion
 
 
         #region [ METHODS ]
 
+        /// <summary>
+        /// Clears then re-draws the grid
+        /// </summary>
+        /// <param name="message"></param>
         public void DrawGameMaster(string message)
         {
+            //  Clears the grid
+            Console.Clear();
+
             //  Draw the grid
             DrawGameGrid();
 
@@ -35,6 +40,9 @@ namespace RetroFalcons_TicTacToeGame
             DrawMessageBox(message);
         }
 
+        /// <summary>
+        /// Retrieves the grid from the Model, then draws it in the middle of the screen
+        /// </summary>
         public void DrawGameGrid()
         {
             //  Get the GameModel field and convert to strings
@@ -73,15 +81,21 @@ namespace RetroFalcons_TicTacToeGame
             Console.WriteLine("");
         }
 
+        /// <summary>
+        /// Draws the message box, which size adapts to the message passed in.
+        /// </summary>
+        /// <param name="inputMessage"></param>
         public void DrawMessageBox(string inputMessage)
         {
             //  Create the buffer to center the Message Box
-            int bufferValue = ((CONSOLE_WIDTH / 2) - (MESSAGE_BOX_WIDTH / 2));//17 is the width of the message box
+            int bufferValue = ((CONSOLE_WIDTH / 2) - (MESSAGE_BOX_WIDTH / 2));
             string buffer = new string(' ', bufferValue);
+            string divider = new string('#', (MESSAGE_BOX_WIDTH - 2));
+            string spacer = new string(' ', (MESSAGE_BOX_WIDTH - 2));
 
             //  Top of message box
-            Console.WriteLine("{0}#~~~~~~~~~~~~~~~#", buffer);
-            Console.WriteLine("{0}#               #", buffer);
+            Console.WriteLine("{0}#{1}#", buffer, divider);
+            Console.WriteLine("{0}#{1}#", buffer, spacer);
 
             //  Generate the middle of the message box
             //  Text gets divided into character segments, with a length of 4 less than box, width then gets '# ' and ' #'
@@ -107,10 +121,9 @@ namespace RetroFalcons_TicTacToeGame
             }
 
             //  Bottom of message box
-            Console.WriteLine("{0}#               #", buffer);
-            Console.WriteLine("{0}#_______________#", buffer);
+            Console.WriteLine("{0}#{1}#", buffer,spacer);
+            Console.WriteLine("{0}#{1}#", buffer,divider);
         }
-
 
         #endregion
 
