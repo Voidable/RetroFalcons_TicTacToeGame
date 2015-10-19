@@ -82,50 +82,96 @@ namespace RetroFalcons_TicTacToeGame
         }
 
         /// <summary>
-        /// Draws the message box, which size adapts to the message passed in.
+        /// Draws the message box, which size adapts to the message passed in. Colors the border
         /// </summary>
         /// <param name="inputMessage"></param>
         public void DrawMessageBox(string inputMessage)
         {
             //  Create the buffer to center the Message Box
             int bufferValue = ((CONSOLE_WIDTH / 2) - (MESSAGE_BOX_WIDTH / 2));
-            string buffer = new string(' ', bufferValue);
-            string divider = new string('#', (MESSAGE_BOX_WIDTH - 2));
+
+            char block = '#';   // Character that outlines the message box
+            string bar = new string(block, MESSAGE_BOX_WIDTH); //   filled bar for message box
+            string leftBar = block + " ";   //  Encloses the left of a message line
+            string rightBar = " " + block;  //  Encloses the right of a message line
+
+            //  Create the empty bar
             string spacer = new string(' ', (MESSAGE_BOX_WIDTH - 2));
+            string emptyBar = block + spacer + block;
 
-            //  Top of message box
-            Console.WriteLine("{0}#{1}#", buffer, divider);
-            Console.WriteLine("{0}#{1}#", buffer, spacer);
+            //  Color for block characters
+            ConsoleColor blockColor = ConsoleColor.DarkYellow;
+            ConsoleColor normal = ConsoleColor.White;
 
-            //  Generate the middle of the message box
-            //  Text gets divided into character segments, with a length of 4 less than box, width then gets '# ' and ' #'
-            int lineLength = MESSAGE_BOX_WIDTH - 4;
+            //  Create list of strings
+            List<string> lines = new List<string>();
 
-            #region Credit for this code block goes to http://stackoverflow.com/users/306651/hans-olsson
-            List<string> chunks = new List<string>();
-            for (int i = 0; i < inputMessage.Length; i += lineLength)
+            //  Add the top of box
+            lines.Add(bar);
+            lines.Add(emptyBar);
+
+            #region Add middle of box
+
+            //  Define the length of the chunks of the message
+            int messageLineLength = MESSAGE_BOX_WIDTH - 4;
+
+            //  Split the input string into lines
+            List<string> messageLines = new List<string>();
+            for (int i = 0; i < inputMessage.Length; i += messageLineLength)    //  Iterate through the input
             {
-                if ((i + lineLength) < inputMessage.Length)
-                    chunks.Add(inputMessage.Substring(i, lineLength));
-                else
-                    chunks.Add(inputMessage.Substring(i));
+                if ((i + messageLineLength) < inputMessage.Length)  //  If we are before the last chunk
+                    messageLines.Add(string.Format(leftBar + inputMessage.Substring(i, messageLineLength)) + rightBar);
+                else   //   On the last chunk
+                    messageLines.Add(leftBar + inputMessage.Substring(i).PadRight(messageLineLength % inputMessage.Length) + rightBar);
             }
+
+            //  Add the split message lines into the lines to write
+            foreach (string line in messageLines)
+            {
+                lines.Add(line);
+            }
+
+
             #endregion
 
-            //  Write each line
-            foreach (string chunk in chunks)
-            {
-                string endPadding = new string(' ', ((MESSAGE_BOX_WIDTH - 4) - chunk.Length));
-                string line = buffer + "# " + chunk + endPadding + " #";
-                Console.WriteLine(line);
-            }
+            //  Add the bottom of box
+            lines.Add(emptyBar);
+            lines.Add(bar);
 
-            //  Bottom of message box
-            Console.WriteLine("{0}#{1}#", buffer,spacer);
-            Console.WriteLine("{0}#{1}#", buffer,divider);
+            #region Write lines
+            foreach (string l in lines)
+            {
+                //  Create list of characters
+                List<string> lineChars = l.Select(c => c.ToString()).ToList();
+
+                //  Set the cursor location
+                Console.CursorLeft = bufferValue;
+
+                //  Iterate through each character
+                foreach (string c in lineChars)
+                {
+                    if (c == block.ToString())  //  Character is block
+                    {
+                        Console.ForegroundColor = blockColor;
+                        Console.Write(c);
+                        Console.ForegroundColor = normal;
+                    }
+                    else   //   Character is not block
+                    {
+                        Console.Write(c);
+                    }
+                }
+                //  Go to next line
+                Console.Write("\n");
+
+            }
+            #endregion
+            //  Write each line one character at a time
+
+
+            #endregion
         }
 
-        #endregion
 
 
         #region [ CONSTRUCTORS ]
