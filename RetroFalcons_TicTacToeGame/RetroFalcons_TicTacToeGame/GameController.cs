@@ -16,13 +16,16 @@ namespace RetroFalcons_TicTacToeGame
             //  Then, create the Game View, passing the Model to it
             GameView view = new GameView(model);
 
-            //TESTING
-            view.DrawGameMaster("This is a test of the emergency broadcast system");
+            bool playingGame = true;
 
-            Console.ReadLine();
-            //ENDTESTING
+            view.DrawGameMaster("Welcome to Tic-Tac-Toe! Press any key to play!");
+            view.WaitForPlayer();
 
-            //TODO: Create Game Logic
+            while (playingGame)
+            {
+
+            }
+
         }
     }
 }

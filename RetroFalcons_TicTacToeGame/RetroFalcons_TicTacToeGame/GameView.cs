@@ -23,7 +23,7 @@ namespace RetroFalcons_TicTacToeGame
         private GameModel _model;
 
         // Character definitions
-        private const char block = '#'; //  Outlines the message box and grid
+        private char _block = '#'; //  Outlines the message box and grid
         private const char vertLine = '|';  //  Vertical lines
         private const char horLine = '-';   //  Horizontal Lines
         private const char cross = '+';     //  Cross of horizontal and vertical lines
@@ -37,6 +37,15 @@ namespace RetroFalcons_TicTacToeGame
 
         #endregion
 
+        #region [ FIELDS ]
+
+        public char Block
+        {
+            get { return _block; }
+            set { value = _block; }
+        }
+
+        #endregion
 
         #region [ METHODS ]
 
@@ -106,14 +115,14 @@ namespace RetroFalcons_TicTacToeGame
                 //  Iterate through each character
                 foreach (string c in lineChars)
                 {
-                    if (c == block.ToString())  //  Character is block
+                    if (c == _block.ToString())  //  Character is block
                     {
                         Console.ForegroundColor = blockColor;
                         Console.Write(c);
                         Console.ForegroundColor = normal;
                     }
                     //  Character is line
-                    else if (c == horLine.ToString() || c == vertLine.ToString() || c== cross.ToString())
+                    else if (c == horLine.ToString() || c == vertLine.ToString() || c == cross.ToString())
                     {
                         Console.ForegroundColor = lineColor;
                         Console.Write(c);
@@ -154,13 +163,13 @@ namespace RetroFalcons_TicTacToeGame
             //  Create the buffer to center the Message Box
             int bufferValue = ((CONSOLE_WIDTH / 2) - (MESSAGE_BOX_WIDTH / 2));
 
-            string bar = new string(block, MESSAGE_BOX_WIDTH); //   filled bar for message box
-            string leftBar = block + " ";   //  Encloses the left of a message line
-            string rightBar = " " + block;  //  Encloses the right of a message line
+            string bar = new string(_block, MESSAGE_BOX_WIDTH); //   filled bar for message box
+            string leftBar = _block + " ";   //  Encloses the left of a message line
+            string rightBar = " " + _block;  //  Encloses the right of a message line
 
             //  Create the empty bar
             string spacer = new string(' ', (MESSAGE_BOX_WIDTH - 2));
-            string emptyBar = block + spacer + block;
+            string emptyBar = _block + spacer + _block;
 
             //  Create list of strings
             List<string> lines = new List<string>();
@@ -210,7 +219,7 @@ namespace RetroFalcons_TicTacToeGame
                 //  Iterate through each character
                 foreach (string c in lineChars)
                 {
-                    if (c == block.ToString())  //  Character is block
+                    if (c == _block.ToString())  //  Character is block
                     {
                         Console.ForegroundColor = blockColor;
                         Console.Write(c);
@@ -227,11 +236,32 @@ namespace RetroFalcons_TicTacToeGame
             }
             #endregion
 
+            //  Write blank line
+            Console.WriteLine();
 
-            #endregion
         }
 
+        /// <summary>
+        /// Returns a string from the player's input
+        /// </summary>
+        /// <returns></returns>
+        public string GetPlayerInput()
+        {
+            string output = "";
 
+            output = Console.ReadLine();
+
+            return output;
+        }
+
+        /// <summary>
+        /// Simply makes the program wait until the player presses a button
+        /// </summary>
+        public void WaitForPlayer()
+        {
+            Console.ReadLine();
+        }
+        #endregion
 
         #region [ CONSTRUCTORS ]
 
