@@ -16,8 +16,24 @@ namespace RetroFalcons_TicTacToeGame
         //  Width of the message box
         private const int MESSAGE_BOX_WIDTH = 27;
 
+        //  Size of the grid
+        private const int GRID_SIZE = 13;
+
         //  Refrence to the model
         private GameModel _model;
+
+        // Character definitions
+        private const char block = '#'; //  Outlines the message box and grid
+        private const char vertLine = '|';  //  Vertical lines
+        private const char horLine = '-';   //  Horizontal Lines
+        private const char cross = '+';     //  Cross of horizontal and vertical lines
+
+        //  Color definitions for characters
+        ConsoleColor blockColor = ConsoleColor.DarkYellow;
+        ConsoleColor lineColor = ConsoleColor.DarkGray;
+        ConsoleColor normal = ConsoleColor.White;
+        ConsoleColor xColor = ConsoleColor.Red;
+        ConsoleColor oColor = ConsoleColor.Blue;
 
         #endregion
 
@@ -54,28 +70,76 @@ namespace RetroFalcons_TicTacToeGame
                     if (_model.Field[x, y] == GameModel.GamePiece.NO_VALUE)
                         grid[x, y] = " ";
                     else
-                        grid[x, y] = _model.Field[x, y].ToString();
+                        grid[x, y] = _model.Field[x, y].ToString().ToUpper();
                 }
             }
 
             //  Create the buffer to center the grid
-            int bufferValue = ((Console.WindowWidth / 2) - (13 / 2));//13 is the width of the grid
-            string buffer = new string(' ', bufferValue);
+            int bufferValue = ((Console.WindowWidth / 2) - (GRID_SIZE / 2));
 
-            //  The Grid itself
-            Console.WriteLine("{0}#############", buffer);
-            Console.WriteLine("{0}#   |   |   #", buffer);
-            Console.WriteLine("{3}# {0} | {1} | {2} #", grid[0, 2], grid[1, 2], grid[2, 2], buffer);
-            Console.WriteLine("{0}#   |   |   #", buffer);
-            Console.WriteLine("{0}#-----------#", buffer);
-            Console.WriteLine("{0}#   |   |   #", buffer);
-            Console.WriteLine("{3}# {0} | {1} | {2} #", grid[0, 1], grid[1, 1], grid[2, 1], buffer);
-            Console.WriteLine("{0}#   |   |   #", buffer);
-            Console.WriteLine("{0}#-----------#", buffer);
-            Console.WriteLine("{0}#   |   |   #", buffer);
-            Console.WriteLine("{3}# {0} | {1} | {2} #", grid[0, 0], grid[1, 0], grid[2, 0], buffer);
-            Console.WriteLine("{0}#   |   |   #", buffer);
-            Console.WriteLine("{0}#############", buffer);
+            //  Create list to hold the lines of the grid
+            List<string> boardLines = new List<string>();
+
+            boardLines.Add("#############");
+            boardLines.Add("#   |   |   #");
+            boardLines.Add(string.Format("# {0} | {1} | {2} #", grid[0, 2], grid[1, 2], grid[2, 2]));
+            boardLines.Add("#   |   |   #");
+            boardLines.Add("#---+---+---#");
+            boardLines.Add("#   |   |   #");
+            boardLines.Add(string.Format("# {0} | {1} | {2} #", grid[0, 1], grid[1, 1], grid[2, 1]));
+            boardLines.Add("#   |   |   #");
+            boardLines.Add("#---+---+---#");
+            boardLines.Add("#   |   |   #");
+            boardLines.Add(string.Format("# {0} | {1} | {2} #", grid[0, 0], grid[1, 0], grid[2, 0]));
+            boardLines.Add("#   |   |   #");
+            boardLines.Add("#############");
+
+            //  Iterate through each line
+            foreach (string l in boardLines)
+            {
+                //  Create list of characters
+                List<string> lineChars = l.Select(c => c.ToString()).ToList();
+
+                //  Set the cursor location
+                Console.CursorLeft = bufferValue;
+
+                //  Iterate through each character
+                foreach (string c in lineChars)
+                {
+                    if (c == block.ToString())  //  Character is block
+                    {
+                        Console.ForegroundColor = blockColor;
+                        Console.Write(c);
+                        Console.ForegroundColor = normal;
+                    }
+                    //  Character is line
+                    else if (c == horLine.ToString() || c == vertLine.ToString() || c== cross.ToString())
+                    {
+                        Console.ForegroundColor = lineColor;
+                        Console.Write(c);
+                        Console.ForegroundColor = normal;
+                    }
+                    else if (c == "X")   //   Character is X
+                    {
+                        Console.ForegroundColor = xColor;
+                        Console.Write(c);
+                        Console.ForegroundColor = normal;
+                    }
+                    else if (c == "O")   //   Character is O
+                    {
+                        Console.ForegroundColor = oColor;
+                        Console.Write(c);
+                        Console.ForegroundColor = normal;
+                    }
+                    else
+                    {
+                        Console.Write(c);
+                    }
+                }
+                //  Go to next line
+                Console.Write("\n");
+
+            }
 
             //  Insert blank line
             Console.WriteLine("");
@@ -90,7 +154,6 @@ namespace RetroFalcons_TicTacToeGame
             //  Create the buffer to center the Message Box
             int bufferValue = ((CONSOLE_WIDTH / 2) - (MESSAGE_BOX_WIDTH / 2));
 
-            char block = '#';   // Character that outlines the message box
             string bar = new string(block, MESSAGE_BOX_WIDTH); //   filled bar for message box
             string leftBar = block + " ";   //  Encloses the left of a message line
             string rightBar = " " + block;  //  Encloses the right of a message line
@@ -98,10 +161,6 @@ namespace RetroFalcons_TicTacToeGame
             //  Create the empty bar
             string spacer = new string(' ', (MESSAGE_BOX_WIDTH - 2));
             string emptyBar = block + spacer + block;
-
-            //  Color for block characters
-            ConsoleColor blockColor = ConsoleColor.DarkYellow;
-            ConsoleColor normal = ConsoleColor.White;
 
             //  Create list of strings
             List<string> lines = new List<string>();
@@ -138,6 +197,7 @@ namespace RetroFalcons_TicTacToeGame
             lines.Add(emptyBar);
             lines.Add(bar);
 
+            //  Write each line one character at a time
             #region Write lines
             foreach (string l in lines)
             {
@@ -166,7 +226,6 @@ namespace RetroFalcons_TicTacToeGame
 
             }
             #endregion
-            //  Write each line one character at a time
 
 
             #endregion
