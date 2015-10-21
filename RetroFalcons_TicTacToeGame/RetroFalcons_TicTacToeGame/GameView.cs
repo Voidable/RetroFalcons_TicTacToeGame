@@ -15,6 +15,7 @@ namespace RetroFalcons_TicTacToeGame
 
         //  Width of the message box
         private const int MESSAGE_BOX_WIDTH = 27;
+        private const int MESSAGE_LINE_WIDTH = MESSAGE_BOX_WIDTH - 4;
 
         //  Size of the grid
         private const int GRID_SIZE = 13;
@@ -178,29 +179,103 @@ namespace RetroFalcons_TicTacToeGame
             lines.Add(bar);
             lines.Add(emptyBar);
 
-            #region Add middle of box
+            #region Add middle of box -- old version
 
-            //  Define the length of the chunks of the message
-            int messageLineLength = MESSAGE_BOX_WIDTH - 4;
+            ////  Define the length of the chunks of the message
+            //int messageLineLength = MESSAGE_BOX_WIDTH - 4;
 
-            //  Split the input string into lines
-            List<string> messageLines = new List<string>();
-            for (int i = 0; i < inputMessage.Length; i += messageLineLength)    //  Iterate through the input
+            ////  Split the input string into lines
+            //List<string> messageLines = new List<string>();
+            //for (int i = 0; i < inputMessage.Length; i += messageLineLength)    //  Iterate through the input
+            //{
+            //    if ((i + messageLineLength) < inputMessage.Length)  //  If we are before the last chunk
+            //        messageLines.Add(string.Format(leftBar + inputMessage.Substring(i, messageLineLength)) + rightBar);
+            //    else   //   On the last chunk
+            //        messageLines.Add(leftBar + inputMessage.Substring(i).PadRight(messageLineLength % inputMessage.Length) + rightBar);
+            //}
+
+            ////  Add the split message lines into the lines to write
+            //foreach (string line in messageLines)
+            //{
+            //    lines.Add(line);
+            //}
+
+
+            #endregion
+
+            #region Add middle of box -- Wordwrap version
+
+            //  Split the message into lines, wrapping words to next line
+            string[] words = inputMessage.Split(' ');
+            string line = "";
+            foreach (string word in words)
             {
-                if ((i + messageLineLength) < inputMessage.Length)  //  If we are before the last chunk
-                    messageLines.Add(string.Format(leftBar + inputMessage.Substring(i, messageLineLength)) + rightBar);
-                else   //   On the last chunk
-                    messageLines.Add(leftBar + inputMessage.Substring(i).PadRight(messageLineLength % inputMessage.Length) + rightBar);
-            }
+                //  If the word does not make the line go over, and has room for an extra space, add it to the line
+                if ((word.Length + line.Length) < MESSAGE_LINE_WIDTH)
+                {
+                    line += word + " ";
 
-            //  Add the split message lines into the lines to write
-            foreach (string line in messageLines)
-            {
-                lines.Add(line);
+                    //  If the word is the last word in the message, finish creating the line
+                    if (word == words.Last())
+                    {
+                        //  Pad the line to make it the right width
+                        line = line.PadRight((MESSAGE_LINE_WIDTH), ' ');
+
+                        //  Add the begining and ending bars to the lines
+                        line = leftBar + line + rightBar;
+
+                        lines.Add(line); // Add the current line to the list
+                    }
+                }
+                //  If the word makes the line equal the max length, add it to the line and add line to list
+                else if ((word.Length + line.Length) == MESSAGE_LINE_WIDTH)
+                {
+                    line += word;
+
+                    //  Pad the line to make it the right width
+                    line = line.PadRight((MESSAGE_LINE_WIDTH), ' ');
+
+                    //  Add the begining and ending bars to the lines
+                    line = leftBar + line + rightBar;
+
+                    lines.Add(line); // Add the current line to the list
+
+                    //  Clear the line
+                    line = "";
+
+                }
+                else // The word would go into the next line
+                {
+                    //  Pad the line to make it the right width
+                    line = line.PadRight((MESSAGE_LINE_WIDTH), ' ');
+
+                    //  Add the begining and ending bars to the lines
+                    line = leftBar + line + rightBar;
+
+                    lines.Add(line); // Add the current line to the list
+                    line = word; //   Make line just the word
+
+                    //  Add a space if the word is less than the line
+                    if (line.Length < MESSAGE_LINE_WIDTH)
+                        line += " ";
+
+                    //  If the word is the last word in the message, add it to a line
+                    if (word == words.Last())
+                    {
+                        //  Pad the line to make it the right width
+                        line = line.PadRight((MESSAGE_LINE_WIDTH), ' ');
+
+                        //  Add the begining and ending bars to the lines
+                        line = leftBar + line + rightBar;
+
+                        lines.Add(line); // Add the current line to the list
+                    }
+                }
             }
 
 
             #endregion
+
 
             //  Add the bottom of box
             lines.Add(emptyBar);
